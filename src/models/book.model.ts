@@ -33,19 +33,19 @@ class BookModel {
     }
 
     async getAverageScore(bookId: number): Promise<number> {
-        logger.info('Calculating average score for book', { bookId });
+        logger.info('Calculating average score for book', {bookId});
         const result = await db('borrowings')
             .where('book_id', bookId)
             .whereNotNull('score')
-            .avg('score as average')
+            .avg({average: 'score'})
             .first();
 
-        const score = result?.average !== undefined && result.average !== null
+        const averageScore = typeof result?.average === 'number'
             ? Number(result.average.toFixed(2))
             : -1;
-            
-        logger.debug('Retrieved average score', { bookId, score });
-        return score;
+
+        logger.debug('Retrieved average score', {bookId, score: averageScore});
+        return averageScore;
     }
 }
 

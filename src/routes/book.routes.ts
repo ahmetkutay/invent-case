@@ -1,20 +1,16 @@
 import { Router } from 'express';
-import { validateBody } from '../middlewares/error.middleware';
-import { createUserSchema, returnBookSchema } from '../validators/user.validator';
+import { validateBody } from '../middlewares/validate.middleware';
+import { createBookSchema } from '../validators/book.validator';
 import {
-    getUsers,
-    getUser,
-    createUser,
-    borrowBook,
-    returnBook
-} from '../controllers/user.controller';
+    getBooks,
+    getBook,
+    createBook
+} from '../controllers/book.controller';
 
 const router = Router();
 
-router.get('/', getUsers);
-router.get('/:id', getUser);
-router.post('/', validateBody(createUserSchema), createUser);
-router.post('/:userId/borrow/:bookId', borrowBook);
-router.post('/:userId/return/:bookId', validateBody(returnBookSchema), returnBook);
+router.get('/', getBooks);
+router.get('/:id', getBook);
+router.post('/', validateBody(createBookSchema), createBook);
 
 export default router;

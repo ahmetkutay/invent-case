@@ -1,7 +1,7 @@
-import { Request, Response } from 'express';
-import { NotFoundError } from '../middlewares/error.middleware';
+import {Request, Response} from 'express';
+import {NotFoundError} from '../middlewares/error.middleware';
 import BookModel from '../models/book.model';
-import { asyncHandler } from '../utils/async-handler';
+import {asyncHandler} from '../utils/async-handler';
 import logger from '../utils/logger';
 
 export const getBooks = asyncHandler(async (_req: Request, res: Response) => {
@@ -16,20 +16,20 @@ export const getBooks = asyncHandler(async (_req: Request, res: Response) => {
 
 export const getBook = asyncHandler(async (req: Request, res: Response) => {
     const bookId = Number(req.params.id);
-    logger.info('GET /books/:id request received', { bookId });
-    
+    logger.info('GET /books/:id request received', {bookId});
+
     const book = await BookModel.findById(bookId);
     if (!book) {
-        logger.warn('Book not found', { bookId });
+        logger.warn('Book not found', {bookId});
         throw new NotFoundError('Book not found');
     }
 
     const score = await BookModel.getAverageScore(book.id);
-    logger.debug('Sending book response', { bookId, score });
+    logger.debug('Sending book response', {bookId, score});
     res.json({
         id: book.id,
         name: book.name,
-        score: score === -1 ? score : score.toFixed(2)
+        score: score === -1 ? -1 : Number(score.toFixed(2))
     });
 });
 
