@@ -1,5 +1,6 @@
 import e, { Request, Response, NextFunction } from 'express';
 import {Schema} from "joi";
+import logger from '../utils/logger'
 
 export class ApiError extends Error {
     statusCode: number;
@@ -94,7 +95,7 @@ export const errorHandler: (err: any, req: e.Request, res: e.Response, next: e.N
         });
     }
 
-    console.error('ERROR 💥', err);
+    logger.error('ERROR 💥', { error: err })
     return res.status(500).json({
         status: 'error',
         message: 'Something went wrong!'
@@ -102,14 +103,18 @@ export const errorHandler: (err: any, req: e.Request, res: e.Response, next: e.N
 };
 
 process.on('unhandledRejection', (err: Error) => {
-    console.error('UNHANDLED REJECTION! 💥 Shutting down...');
-    console.error(err.name, err.message);
+    logger.error('UNHANDLED REJECTION! 💥 Shutting down...', {
+        name: err.name,
+        message: err.message
+    })
     process.exit(1);
 });
 
 process.on('uncaughtException', (err: Error) => {
-    console.error('UNCAUGHT EXCEPTION! 💥 Shutting down...');
-    console.error(err.name, err.message);
+    logger.error('UNCAUGHT EXCEPTION! 💥 Shutting down...', {
+        name: err.name,
+        message: err.message
+    })
     process.exit(1);
 });
 

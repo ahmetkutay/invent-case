@@ -1,13 +1,13 @@
 import { Router } from 'express';
-import { validateBody } from '@/middlewares/error.middleware';
-import { createUserSchema, returnBookSchema } from '@/validators/user.validator';
+import { validateBody } from '../middlewares/error.middleware';
+import { createUserSchema, returnBookSchema } from '../validators/user.validator';
 import {
     getUsers,
     getUser,
     createUser,
     borrowBook,
     returnBook
-} from '@/controllers/user.controller';
+} from '../controllers/user.controller';
 
 const router = Router();
 
