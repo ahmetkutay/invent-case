@@ -6,7 +6,7 @@ services:
       context: .
       dockerfile: Dockerfile
     ports:
-      - "3000:3000"
+      - "8000:8000"
     environment:
       - NODE_ENV=development
       - DB_HOST=postgres
@@ -20,7 +20,7 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
-    command: sh -c "npm run migrate && npm run seed && npm run dev"
+    command: sh -c "npm run migrate || exit 0 && npm run seed || exit 0 && npm run dev"
 
   postgres:
     image: postgres:16-alpine
