@@ -39,9 +39,8 @@ class BookModel {
             .whereNotNull('score')
             .avg({average: 'score'})
             .first();
-
-        const averageScore = typeof result?.average === 'number'
-            ? Number(result.average.toFixed(2))
+        const averageScore = typeof result?.average === 'string'
+            ? Number(Number(result.average).toFixed(2))
             : -1;
 
         logger.debug('Retrieved average score', {bookId, score: averageScore});
